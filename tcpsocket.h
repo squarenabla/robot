@@ -7,8 +7,10 @@
 #include <QDebug>
 
 #include <QString>
+#include <QStringList>
 
 #include "globals.h"
+#include "robot.h"
 
 class TCPSocket : public QObject
 {
@@ -28,7 +30,9 @@ public slots:
     void readyRead();
 
 private:
+
     QTcpSocket *socket;
+    Robot *robot;
 };
 
 #endif // TCPSOCKET_H

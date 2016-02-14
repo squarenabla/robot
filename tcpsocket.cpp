@@ -3,6 +3,7 @@
 TCPSocket::TCPSocket(QObject *parent) :
     QObject(parent)
 {
+    robot = new Robot(this);
 }
 
 void TCPSocket::doConnect(){
@@ -42,6 +43,9 @@ void TCPSocket::bytesWritten(qint64 bytes){
 
 void TCPSocket::readyRead(){
     qDebug()<<"reading";
-    qDebug()<<socket->readAll();
+    QByteArray data =  socket->readAll();
+    qDebug()<<data;
+    robot->parseDataStream(data);
     return;
 }
+
