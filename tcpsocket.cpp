@@ -1,9 +1,19 @@
 #include "tcpsocket.h"
 
+using namespace std::chrono;
+
 TCPSocket::TCPSocket(QObject *parent) :
     QObject(parent)
 {
     robot = new Robot(this);
+    connect(robot,SIGNAL(sendPosition(qreal,qreal,qreal,qreal,qreal)),
+            this, SIGNAL(sendPosition(qreal,qreal,qreal,qreal,qreal)));
+
+    connect(robot, SIGNAL(sendError(qreal,qreal)),this,SIGNAL(sendError(qreal,qreal)));
+    connect(robot, SIGNAL(sendSpeed(qreal,qreal)),this,SIGNAL(sendSpeed(qreal,qreal)));
+
+    milliseconds ms = duration_cast< milliseconds >(system_clock::now().time_since_epoch());
+    prevTime = ms.count();
 }
 
 void TCPSocket::doConnect(){
@@ -13,6 +23,7 @@ void TCPSocket::doConnect(){
     connect(socket, SIGNAL(disconnected()), this, SLOT(disconnected()));
     connect(socket, SIGNAL(bytesWritten(qint64)), this, SLOT(bytesWritten(qint64)));
     connect(socket, SIGNAL(readyRead()), this, SLOT(readyRead()));
+
 
     qDebug()<<"connecting";
 
@@ -27,7 +38,7 @@ void TCPSocket::doConnect(){
 
 void TCPSocket::connected(){
     qDebug()<<"connected";
-    socket->write("knock - knock");
+    //socket->write("knock - knock");
     return;
 }
 
@@ -42,10 +53,21 @@ void TCPSocket::bytesWritten(qint64 bytes){
 }
 
 void TCPSocket::readyRead(){
+
     qDebug()<<"reading";
+    milliseconds ms = duration_cast< milliseconds >(system_clock::now().time_since_epoch());
+    //qDebug()<<(unsigned int)ms.count();
     QByteArray data =  socket->readAll();
-    qDebug()<<data;
-    robot->parseDataStream(data);
+    if((unsigned int)ms.count() - prevTime > 100){
+
+        //qDebug()<<data;
+        robot->parseDataStream(data.left(BUFFER_SIZE));
+        prevTime = ms.count();
+
+        //qDebug()<<robot->packData().toLocal8Bit();
+        socket->write(robot->packData().toLocal8Bit());
+        socket->flush();
+    }
     return;
 }
 
