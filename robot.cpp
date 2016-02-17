@@ -182,8 +182,8 @@ void Robot::parseDataStream(const QByteArray &data){
         qreal errorFy = 0.0;
 
         if(!firstMessage){
-            errorFx = (/*mass**/(speedX - prevspeedX)/dt) - forceX;
-            errorFy = (/*mass**/(speedY - prevspeedY)/dt) - forceY;
+            errorFx = (/*mass**/(speedX - prevspeedX)/*/dt*/) - forceX;
+            errorFy = (/*mass**/(speedY - prevspeedY)/*/dt*/) - forceY;
         }
         else{
             firstMessage = false;
@@ -192,20 +192,23 @@ void Robot::parseDataStream(const QByteArray &data){
         if(qAbs(dSpeedX) < 0.001 || qAbs(dSpeedY) < 0.001){
             if(dSpeedX < 0.001){
                 forceX = 0.0;
+                forceY = sgn(dSpeedY)*MAX_FORCE;
             }
             if(dSpeedY < 0.001){
                 forceY = 0.0;
+                forceX = sgn(dSpeedX)*MAX_FORCE;
             }
         }
         else{
             if(k < 1){
-                    forceX = k*sgn(dSpeedX)/*mass*MAX_AXELERATION*/;
-                    forceY = sgn(dSpeedY)/*mass*MAX_AXELERATION*/;
+                    forceX = k*sgn(dSpeedX)*MAX_FORCE/*mass*MAX_AXELERATION*/;
+                    forceY = sgn(dSpeedY)*MAX_FORCE/*mass*MAX_AXELERATION*/;
             }
             else{
-                    forceX = sgn(dSpeedX)/*mass*MAX_AXELERATION*/;
-                    forceY = sgn(dSpeedY)/*mass*MAX_AXELERATION*//k;
+                    forceX = sgn(dSpeedX)*MAX_FORCE/*mass*MAX_AXELERATION*/;
+                    forceY = sgn(dSpeedY)*MAX_FORCE/*mass*MAX_AXELERATION*//k;
             }
+        }
   //      }
 
         //forceX = FxPid.outputSignal(errorFx) + mass*(alpha*betta*CRUISE_SPEED-speedX)/TIME_TO_CRUISE;
@@ -215,7 +218,7 @@ void Robot::parseDataStream(const QByteArray &data){
        // FyPid.outputSignal(errorFy);
           forceX += FxPid.outputSignal(errorFx);
           forceY += FyPid.outputSignal(errorFy);
-    }
+    //}
     //qDebug()<<"Real FX ="<<mass*(dspx)/(dt);
     //qDebug()<<"Real FY ="<<mass*(dspy)/(dt);
 
@@ -228,7 +231,7 @@ void Robot::parseDataStream(const QByteArray &data){
 
     emit sendPosition(positionX,positionY,targetX,targetY, radius);
     emit sendError(errorFx,errorFy);
-    emit sendSpeed(speedX, speedY);
+    emit sendSpeed(speedX, speedY, targetX-positionX, targetY-positionY);
 
     showForce();
     return;

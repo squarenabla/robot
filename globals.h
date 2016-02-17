@@ -9,9 +9,10 @@
 #define KI 0.0
 #define KD 0.3
 
-#define CRUISE_SPEED 0.2
+#define CRUISE_SPEED 0.1
 #define TIME_TO_CRUISE 0.1
 #define MAX_AXELERATION 0.001
+#define MAX_FORCE 0.2
 
 #define SMALL_NUM 0.0001
 

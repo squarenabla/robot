@@ -23,7 +23,9 @@ signals:
                       const qreal r);
 
     void sendError(const qreal erx, const qreal ery);
-    void sendSpeed(const qreal vx, const qreal vy);
+    void sendSpeed(const qreal vx, const qreal vy,
+                   const qreal dx, const qreal dy);
+
 
 public slots:
     void setPosition(const qreal &x, const qreal &y);

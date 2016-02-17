@@ -21,7 +21,7 @@ public:
     ~MainWindow();
 
 public slots:
-    void setSpeed(qreal sx, qreal sy);
+    void setSpeed(qreal sx, qreal sy, qreal dx, qreal dy);
     void setError(qreal erx, qreal ery);
 
 private:

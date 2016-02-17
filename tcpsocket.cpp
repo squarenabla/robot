@@ -10,7 +10,7 @@ TCPSocket::TCPSocket(QObject *parent) :
             this, SIGNAL(sendPosition(qreal,qreal,qreal,qreal,qreal)));
 
     connect(robot, SIGNAL(sendError(qreal,qreal)),this,SIGNAL(sendError(qreal,qreal)));
-    connect(robot, SIGNAL(sendSpeed(qreal,qreal)),this,SIGNAL(sendSpeed(qreal,qreal)));
+    connect(robot, SIGNAL(sendSpeed(qreal,qreal,qreal,qreal)),this,SIGNAL(sendSpeed(qreal,qreal,qreal,qreal)));
 
     milliseconds ms = duration_cast< milliseconds >(system_clock::now().time_since_epoch());
     prevTime = ms.count();

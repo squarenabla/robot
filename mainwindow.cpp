@@ -15,7 +15,7 @@ MainWindow::MainWindow(QWidget *parent) :
             ui->widget, SLOT(paintPosition(qreal,qreal,qreal,qreal,qreal)));
 
     connect(socket, SIGNAL(sendError(qreal,qreal)), this, SLOT(setError(qreal,qreal)));
-    connect(socket, SIGNAL(sendSpeed(qreal,qreal)), this, SLOT(setSpeed(qreal,qreal)));
+    connect(socket, SIGNAL(sendSpeed(qreal,qreal,qreal,qreal)), this, SLOT(setSpeed(qreal,qreal,qreal,qreal)));
 
     time = 0;
     erX = 0.0;
@@ -29,9 +29,11 @@ MainWindow::~MainWindow()
     delete ui;
 }
 
-void MainWindow::setSpeed(qreal sx, qreal sy){
+void MainWindow::setSpeed(qreal sx, qreal sy, qreal dx, qreal dy){
     ui->labelSpX->setText("Vx = "+QString::number(sx));
     ui->labelSpY->setText("Vy = "+QString::number(sy));
+    ui->labeldX->setText("dX = "+QString::number(dx));
+    ui->labeldY->setText("dY = "+QString::number(dy));
 }
 
 void MainWindow::setError(qreal erx, qreal ery){
