@@ -23,7 +23,8 @@ SOURCES += main.cpp\
     robot.cpp \
     pidregulator.cpp \
     painter.cpp \
-    qcustomplot.cpp
+    qcustomplot.cpp \
+    parser.cpp
 
 HEADERS  += mainwindow.h \
     tcpsocket.h \
@@ -31,6 +32,7 @@ HEADERS  += mainwindow.h \
     robot.h \
     pidregulator.h \
     painter.h \
-    qcustomplot.h
+    qcustomplot.h \
+    parser.h
 
 FORMS    += mainwindow.ui

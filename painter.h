@@ -20,7 +20,6 @@ public slots:
 
 protected:
     void paintEvent(QPaintEvent *e);
-    //QMatrix matrix;
 
     qreal x;
     qreal y;

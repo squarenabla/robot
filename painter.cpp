@@ -13,12 +13,12 @@ Painter::Painter(QWidget *parent) :
 }
 
 void Painter::paintPosition(const qreal _x, const qreal _y, const qreal _tx, const qreal _ty, const qreal _r){
-    x = _x*width()/2;
-    y = _y*height()/2;
-    tx = _tx*width()/2;
-    ty = _ty*height()/2;
-    radiusx = _r*width()/2;
-    radiusy = _r*height()/2;
+    x = 0.5*_x*(qreal)width();
+    y = 0.5*_y*(qreal)height();
+    tx = 0.5*_tx*(qreal)width();
+    ty = 0.5*_ty*(qreal)height();
+    radiusx = 0.5*_r*(qreal)width();
+    radiusy = 0.5*_r*(qreal)height();
 
     repaint();
 }
@@ -32,7 +32,7 @@ void Painter::paintEvent(QPaintEvent *e){
     QPen targetPen(Qt::red);
     targetPen.setWidth(2);
 
-    painter.drawRect(0,0,width(),height());
+    painter.drawRect(0,0,(width()-1),(height()-1));
 
     QTransform matrix;
     matrix.translate(width()/2, height()/2);
@@ -41,12 +41,8 @@ void Painter::paintEvent(QPaintEvent *e){
     painter.setWorldTransform(matrix);
 
     painter.setPen(objectPen);
-    painter.drawEllipse((int)x, (int)y, (int)radiusx, (int)radiusy);
+    painter.drawEllipse(x, y, radiusx, radiusy);
 
     painter.setPen(targetPen);
-    painter.drawEllipse((int)tx, (int)ty, 2, 2);
-
-
-
-
+    painter.drawEllipse(tx, ty, 2, 2);
 }

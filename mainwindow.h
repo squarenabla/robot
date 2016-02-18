@@ -22,22 +22,26 @@ public:
 
 public slots:
     void setSpeed(qreal sx, qreal sy, qreal dx, qreal dy);
-    void setError(qreal erx, qreal ery);
+    void setError(qreal erx, qreal ery, qreal fx, qreal fy);
+    void enableButton();
+
+private slots:
+    void on_pushButton_clicked();
 
 private:
     void setupPlot();
-    void plotError(qreal key);
+    void plotError(qreal key, qreal value0, qreal value1);
 
     Ui::MainWindow *ui;
     TCPSocket *socket;
     QPainter *painter;
+
     int time;
 
     double erX;
     double erY;
 
     QTimer dataTimer;
-    //double lastPointKey;
 };
 
 #endif // MAINWINDOW_H

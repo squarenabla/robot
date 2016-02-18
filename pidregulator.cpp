@@ -13,7 +13,7 @@ PidRegulator::PidRegulator(QObject *parent) : QObject(parent)
 PidRegulator::~PidRegulator(){}
 
 qreal PidRegulator::outputSignal(const qreal &error){
-    qDebug()<<"Error:"<<error;
+    //qDebug()<<"Error:"<<error;
     proportion = KP*error;
     integr+=KI*error;
     diff = KD*(error - prevError);
